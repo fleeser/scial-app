@@ -12,7 +12,7 @@ import 'package:scial/exclusives/preferences_store.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isWindows || !Platform.isLinux) FirebaseWindowsLinux.FirebaseAuth('AIzaSyDm9nOXkJAHXrwe3Tm9TIX4GAlSQjGC_og', await PreferencesStore.create());
+  if (Platform.isWindows || !Platform.isLinux) FirebaseWindowsLinux.FirebaseAuth.initialize('AIzaSyDm9nOXkJAHXrwe3Tm9TIX4GAlSQjGC_og', await PreferencesStore.create());
   else await FirebaseCoreStandard.Firebase.initializeApp();
 
   await EasyLocalization.ensureInitialized();
