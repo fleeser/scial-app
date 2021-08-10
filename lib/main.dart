@@ -2,8 +2,8 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firedart/firedart.dart' as FirebaseAuthWindowsLinux;
+import 'package:firebase_core/firebase_core.dart' as FirebaseCoreStandard;
+import 'package:firedart/firedart.dart' as FirebaseWindowsLinux;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scial/exclusives/preferences_store.dart';
@@ -11,8 +11,8 @@ import 'package:scial/exclusives/preferences_store.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isWindows || !Platform.isLinux) FirebaseAuthWindowsLinux.FirebaseAuth('AIzaSyDm9nOXkJAHXrwe3Tm9TIX4GAlSQjGC_og', await PreferencesStore.create());
-  else await Firebase.initializeApp();
+  if (Platform.isWindows || !Platform.isLinux) FirebaseWindowsLinux.FirebaseAuth('AIzaSyDm9nOXkJAHXrwe3Tm9TIX4GAlSQjGC_og', await PreferencesStore.create());
+  else await FirebaseCoreStandard.Firebase.initializeApp();
 
   runApp(ProviderScope(child: App()));
 }
