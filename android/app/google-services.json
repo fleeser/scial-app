@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "689839683320",
+    "project_id": "scial2021",
+    "storage_bucket": "scial2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689839683320:android:864763da084f2ab7a6ed0d",
+        "android_client_info": {
+          "package_name": "com.scial.scial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689839683320-fooc7fh3avtgaf5uc13t0h7334k9lh5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scial.scial",
+            "certificate_hash": "5c34ef40564b50e799240844ab3574f75dd13ddc"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYv2iXK8x2zpllsBvKTuD0_yVcxRZyCDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689839683320-7ckb28bl0okn62q62ihti93p1qktu744.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.scial.scial"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
