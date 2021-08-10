@@ -34,6 +34,8 @@ dependencies:
   firebase_core: ^1.4.0
   firebase_auth: ^3.0.1
 
+  easy_localization: ^3.0.0
+
   # Windows only:
 
   shared_preferences: ^2.0.6
