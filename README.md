@@ -2,12 +2,12 @@
 
 This is the Repository for scial.
 
-## About
+## 📃 About
 
 This project will be available on:
 
-✔️ Android
-✔️ iOS
-✔️ Web
-✔️ Windows
-✔️ MacOS
+- Android ✔️
+- iOS ✔️
+- Web ✔️
+- Windows ✔️
+- macOS ✔️
