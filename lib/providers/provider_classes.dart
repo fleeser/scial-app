@@ -5,3 +5,9 @@ class BooleanStartingWithFalseStateNotifier extends StateNotifier<bool> {
 
   void trigger() => state = !state;
 }
+
+class BooleanStartingWithTrueStateNotifier extends StateNotifier<bool> {
+  BooleanStartingWithTrueStateNotifier() : super(true);
+
+  void trigger() => state = !state;
+}
