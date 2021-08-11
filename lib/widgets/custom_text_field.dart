@@ -81,7 +81,7 @@ List<Widget> textFieldChildren({ required IconData icon, required bool isPasswor
       height: 36.0,
       child: RawMaterialButton(
         onPressed: obscurePressed,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
         child: Icon(
           obscureText ? Icons.visibility_off_rounded : Icons.visibility_rounded,
           color: obscureText ? Palette.gray400 : Palette.blue500,
