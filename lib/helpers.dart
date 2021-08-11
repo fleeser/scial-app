@@ -18,3 +18,7 @@ double getTextHeight(String text, TextStyle textStyle, double maxWidth) {
 
   return textPainter.height;
 }
+
+// TODO: Something is not right here:
+
+double getNeededScrollHeight(BuildContext context, { required double widgetsHeight, bool hasAppBar = false }) => MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom + (hasAppBar ? kToolbarHeight : 0.0) + widgetsHeight;
