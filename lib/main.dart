@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart' as FirebaseCoreStandard;
 import 'package:firedart/firedart.dart' as FirebaseWindowsLinux;
+import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuthStandard;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scial/exclusives/preferences_store.dart';
+import 'package:scial/providers/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,12 +50,29 @@ class App extends StatelessWidget {
   }
 }
 
-class Root extends StatelessWidget {
+class Root extends ConsumerWidget {
 
   const Root({ Key? key }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(color: Colors.yellow);
+  Widget build(BuildContext context, ScopedReader watch) {
+
+    if (Platform.isWindows || Platform.isLinux) {
+      final AsyncValue<bool> authStateWindowsLinux = watch(authStateWindowsLinuxProvider);
+
+      return authStateWindowsLinux.when(
+        data: (bool isSignedIn) => isSignedIn ? Container(color: Colors.green) : Container(color: Colors.blue), 
+        loading: () => Container(color: Colors.yellow), 
+        error: (Object e, StackTrace? s) => Container(color: Colors.red)
+      );
+    }
+
+    final AsyncValue<FirebaseAuthStandard.User?> authStateStandard = watch(authStateStandardProvider);
+
+    return authStateStandard.when(
+      data: (FirebaseAuthStandard.User? user) => user != null ? Container(color: Colors.green) : Container(color: Colors.blue),
+      loading: () => Container(color: Colors.yellow), 
+      error: (Object e, StackTrace? s) => Container(color: Colors.red)
+    );
   }
 }
