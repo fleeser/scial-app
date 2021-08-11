@@ -22,3 +22,5 @@ final authStateWindowsLinuxProvider = StreamProvider<bool>((ref) => ref.watch(au
 // SIGN IN
 
 final signInIsLoadingProvider = StateNotifierProvider.autoDispose<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
+
+final signInObscureTextProvider = StateNotifierProvider.autoDispose<BooleanStartingWithTrueStateNotifier, bool>((ref) => BooleanStartingWithTrueStateNotifier());
