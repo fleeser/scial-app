@@ -81,9 +81,9 @@ class Root extends ConsumerWidget {
     final AsyncValue<FirebaseAuthStandard.User?> authStateStandard = watch(authStateStandardProvider);
 
     return authStateStandard.when(
-      data: (FirebaseAuthStandard.User? user) => user != null ? Container(color: Colors.green) : SignInScreen(),
+      data: (FirebaseAuthStandard.User? user) => user != null ? SignInScreen() : Container(color: Colors.blue),
       loading: () => Container(color: Colors.yellow), 
-      error: (Object e, StackTrace? s) => Container(color: Colors.red, child: Center(child: Text(e.toString()),),)
+      error: (Object e, StackTrace? s) => Container(color: Colors.red)
     );
   }
 }
