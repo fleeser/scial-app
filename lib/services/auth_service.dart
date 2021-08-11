@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuthStandard;
 import 'package:firedart/firedart.dart' as FirebaseWindowsLinux;
@@ -31,7 +33,7 @@ class AuthService implements BaseAuthService {
   @override
   Future<bool> signIn({ required String email, required String password }) async {
     try {
-      if (Platform.isWindows || Platform.isLinux) await authWindowsLinux.signIn(email, password);
+      if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) await authWindowsLinux.signIn(email, password);
       else await authStandard.signInWithEmailAndPassword(email: email, password: password);
       return true;
     } on FirebaseAuthStandard.FirebaseAuthException catch (e) {
