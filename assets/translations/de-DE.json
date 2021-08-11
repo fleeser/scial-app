@@ -1,4 +1,8 @@
 {
     "sign_in" : "Anmelden",
-    "sign_in_description" : "???"
+    "sign_in_description" : "???",
+    "email" : "E-Mail",
+    "password" : "Passwort",
+    "forgot_password" : "Passwort vergessen",
+    "no_account" : "Du hast keinen Account"
 }

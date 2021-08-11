@@ -1,4 +1,8 @@
 {
     "sign_in" : "Sign In",
-    "sign_in_description" : "???"
+    "sign_in_description" : "???",
+    "email" : "E-Mail",
+    "password" : "Password",
+    "forgot_password" : "Forgot Password",
+    "no_account" : "You don't have an account"
 }
