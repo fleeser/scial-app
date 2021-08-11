@@ -72,8 +72,8 @@ class Root extends ConsumerWidget {
       final AsyncValue<bool> authStateWindowsLinux = watch(authStateWindowsLinuxProvider);
 
       return authStateWindowsLinux.when(
-        data: (bool isSignedIn) => isSignedIn ? Container(color: Colors.green) : Container(color: Colors.blue), 
-        loading: () => SignInScreen(), 
+        data: (bool isSignedIn) => isSignedIn ? Container(color: Colors.green) : SignInScreen(),
+        loading: () => Container(color: Colors.yellow), 
         error: (Object e, StackTrace? s) => Container(color: Colors.red)
       );
     }
@@ -81,7 +81,7 @@ class Root extends ConsumerWidget {
     final AsyncValue<FirebaseAuthStandard.User?> authStateStandard = watch(authStateStandardProvider);
 
     return authStateStandard.when(
-      data: (FirebaseAuthStandard.User? user) => user != null ? SignInScreen() : Container(color: Colors.blue),
+      data: (FirebaseAuthStandard.User? user) => user != null ? Container(color: Colors.green) : SignInScreen(),
       loading: () => Container(color: Colors.yellow), 
       error: (Object e, StackTrace? s) => Container(color: Colors.red)
     );
