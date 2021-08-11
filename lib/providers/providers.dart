@@ -12,3 +12,8 @@ final firebaseWindowsLinuxAuthProvider = Provider<FirebaseWindowsLinux.FirebaseA
 // SERVICES
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService(ref.read));
+
+// USER
+
+final authStateStandardProvider = StreamProvider<FirebaseAuthStandard.User?>((ref) => ref.watch(authServiceProvider).authStateChangesStandard);
+final authStateWindowsLinuxProvider = StreamProvider<bool>((ref) => ref.watch(authServiceProvider).signInStateWindowsLinux);
