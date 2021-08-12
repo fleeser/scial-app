@@ -1,18 +1,26 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuthStandard;
 import 'package:firedart/firedart.dart' as FirebaseWindowsLinux;
+import 'package:location/location.dart';
 
 import 'package:scial/services/auth_service.dart';
 import 'package:scial/providers/provider_classes.dart';
+import 'package:scial/services/location_service.dart';
 
 // FIREBASE
 
 final firebaseStandardAuthProvider = Provider<FirebaseAuthStandard.FirebaseAuth>((ref) => FirebaseAuthStandard.FirebaseAuth.instance);
 final firebaseWindowsLinuxAuthProvider = Provider<FirebaseWindowsLinux.FirebaseAuth>((ref) => FirebaseWindowsLinux.FirebaseAuth.instance);
 
+// LOCATION
+
+final locationProvider = Provider<Location>((ref) => Location.instance);
+
 // SERVICES
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService(ref.read));
+
+final locationServiceProvider = Provider<LocationService>((ref) => LocationService(ref.read));
 
 // USER
 
@@ -24,3 +32,7 @@ final authStateWindowsLinuxProvider = StreamProvider<bool>((ref) => ref.watch(au
 final signInIsLoadingProvider = StateNotifierProvider.autoDispose<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
 
 final signInObscureTextProvider = StateNotifierProvider.autoDispose<BooleanStartingWithTrueStateNotifier, bool>((ref) => BooleanStartingWithTrueStateNotifier());
+
+// HOME
+
+final currentLocationFutureProvider = FutureProvider<LocationData>((ref) => ref.watch(locationServiceProvider).currentLocation);
