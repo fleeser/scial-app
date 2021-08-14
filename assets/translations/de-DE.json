@@ -4,5 +4,9 @@
     "email" : "E-Mail",
     "password" : "Passwort",
     "forgot_password" : "Passwort vergessen",
-    "no_account" : "Du hast keinen Account"
+    "no_account" : "Du hast keinen Account",
+    
+    "panel_drag_up" : "Hier unten geht die Party",
+    "search_here" : "Hier suchen",
+    "my_location" : "Mein Standort"
 }
