@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scial/providers/providers.dart';
 import 'package:scial/screens/auth/sign_in/sign_in_screen.dart';
-import 'package:scial/screens/home/custom_map.dart';
+import 'package:scial/screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +57,7 @@ class Root extends ConsumerWidget {
     final AsyncValue<User?> authState = watch(authStateProvider);
 
     return authState.when(
-      data: (User? user) => user != null ? CustomMap() : SignInScreen(),
+      data: (User? user) => user != null ?HomeScreen() : SignInScreen(),
       loading: () => Container(color: Colors.yellow), 
       error: (Object e, StackTrace? s) => Container(color: Colors.red)
     );
