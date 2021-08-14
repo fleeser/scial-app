@@ -8,5 +8,7 @@
     
     "panel_drag_up" : "Hier unten geht die Party",
     "search_here" : "Hier suchen",
-    "my_location" : "Mein Standort"
+    "my_location" : "Mein Standort",
+    "no_events_found" : "Keine Events in dieser Umgebung gefunden.",
+    "error_loading" : "Beim Laden ist ein Fehler aufgetreten."
 }
