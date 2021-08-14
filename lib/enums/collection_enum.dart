@@ -1,0 +1,4 @@
+enum CollectionEnum {
+  USERS,
+  EVENTS
+}
