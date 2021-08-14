@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:scial/enums/event_category_enum.dart';
+import 'package:scial/themes/palette.dart';
 
 extension EventCategoryEnumExtension on EventCategoryEnum {
   int get value {
@@ -14,6 +17,14 @@ extension EventCategoryEnumExtension on EventCategoryEnum {
       case EventCategoryEnum.PARTY: return '🎉';
       case EventCategoryEnum.SPORTS: return '⚽';
       case EventCategoryEnum.WATCH: return '📺';
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case EventCategoryEnum.PARTY: return Palette.green500;
+      case EventCategoryEnum.SPORTS: return Palette.yellow500;
+      case EventCategoryEnum.WATCH: return Palette.orange500;
     }
   }
 }
