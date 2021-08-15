@@ -10,5 +10,10 @@
     "search_here" : "Search here",
     "my_location" : "My location",
     "no_events_found" : "No events found in this area.",
-    "error_loading" : "An error occured while loading."
+    "error_loading" : "An error occured while loading.",
+    "location_denied" : "You denied on your location.",
+    "location_fail" : "We could not find your exact location.",
+    "search" : "Search",
+    "use_my_location" : "Use my location",
+    "no_places_found" : "No places found for your search."
 }
