@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
@@ -43,10 +42,9 @@ class DatabaseService implements BaseDatabaseService {
   Stream<List<EventModel>> streamEventsWithin({ required GeoFirePoint center, required double radius }) {
     return geoflutterfire.collection(collectionRef: eventsReference).within(center: center, radius: radius, field: 'position').map((List<DocumentSnapshot<Map<String, dynamic>>> eventsList) {
       List<EventModel> list = <EventModel>[];
-
-      eventsList.forEach((DocumentSnapshot<Map<String, dynamic>> doc) {
-        Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
-        list.add(EventModel.fromMap(map));
+      
+      eventsList.forEach((DocumentSnapshot<Map<String, dynamic>> snapshot) {
+        list.add(EventModel.fromMap(snapshot.data()!));
       });
 
       return list;
