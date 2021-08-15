@@ -39,3 +39,11 @@ class MapControllerStartingWithNullStateNotifier extends StateNotifier<MapContro
 
   void update(MapController controller) => state = controller;
 }
+
+class DoubleStartingWithGivenValueStateNotifier extends StateNotifier<double> {
+  final double startingValue;
+
+  DoubleStartingWithGivenValueStateNotifier(this.startingValue) : super(startingValue);
+
+  void changeTo(double value) => state = value;
+}

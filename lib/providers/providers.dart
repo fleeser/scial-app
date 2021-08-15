@@ -93,3 +93,7 @@ final searchInputProvider = StateNotifierProvider<StringStartingWithEmptyStateNo
 final searchIsOpenProvider = StateNotifierProvider<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
 
 final mapControllerProvider = StateNotifierProvider<MapControllerStartingWithNullStateNotifier, MapController?>((ref) => MapControllerStartingWithNullStateNotifier());
+
+final addFloatingActionButtonPositionProvider = StateNotifierProvider.family<DoubleStartingWithGivenValueStateNotifier, double, double>((ref, value) => DoubleStartingWithGivenValueStateNotifier(value));
+
+final addFloatingActionButtonIsShownProvider = StateNotifierProvider<BooleanStartingWithTrueStateNotifier, bool>((ref) => BooleanStartingWithTrueStateNotifier());
