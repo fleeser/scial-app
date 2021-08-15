@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scial/enums/event_list_state_enum.dart';
+import 'package:mapbox_search/mapbox_search.dart';
 
+import 'package:scial/enums/event_list_state_enum.dart';
+import 'package:scial/enums/selected_center_enum.dart';
 import 'package:scial/models/event_list_model.dart';
 import 'package:scial/providers/providers.dart';
 import 'package:scial/themes/palette.dart';
@@ -19,6 +21,8 @@ class ExpandedPanel extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
 
     final AsyncValue<EventListModel> events = watch(eventsWithinStreamProvider);
+    final SelectedCenterEnum selectedCenter = watch(selectedCenterProvider);
+    final MapBoxPlace? selectedPlace = watch(selectedPlaceProvider);
 
     return Container(
       padding: EdgeInsets.only(top: 24.0),
@@ -50,7 +54,7 @@ class ExpandedPanel extends ConsumerWidget {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: Text(
-                      'my_location'.tr(),
+                      selectedCenter == SelectedCenterEnum.LOCATION ? 'my_location'.tr() : selectedPlace!.placeName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
