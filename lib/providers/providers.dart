@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -13,6 +14,7 @@ import 'package:scial/enums/location_state_enum.dart';
 import 'package:scial/models/event_list_model.dart';
 import 'package:scial/models/event_model.dart';
 import 'package:scial/models/location_model.dart';
+import 'package:scial/enums/selected_center_enum.dart';
 import 'package:scial/services/auth_service.dart';
 import 'package:scial/providers/provider_classes.dart';
 import 'package:scial/services/database_service.dart';
@@ -60,16 +62,26 @@ final signInObscureTextProvider = StateNotifierProvider.autoDispose<BooleanStart
 
 final currentLocationFutureProvider = FutureProvider<LocationModel>((ref) => ref.watch(locationServiceProvider).currentLocation);
 
+final selectedCenterProvider = StateNotifierProvider<SelectedCenterStartingWithLocationStateNotifier, SelectedCenterEnum>((ref) => SelectedCenterStartingWithLocationStateNotifier());
+
+final selectedPlaceProvider = StateNotifierProvider<SelectedPlaceStartingWithNullStateNotifier, MapBoxPlace?>((ref) => SelectedPlaceStartingWithNullStateNotifier());
+
 final eventsWithinStreamProvider = StreamProvider<EventListModel>((ref) {
+  final SelectedCenterEnum selectedCenter = ref.watch(selectedCenterProvider);
   final AsyncValue<LocationModel> locationModel = ref.watch(currentLocationFutureProvider);
+  final MapBoxPlace? selectedPlace = ref.watch(selectedPlaceProvider);
+  
+  if (selectedCenter == SelectedCenterEnum.LOCATION) {
+    if (locationModel.data == null) return Stream.value(EventListModel(state: EventListStateEnum.WAITING));
 
-  if (locationModel.data == null) return Stream.value(EventListModel(state: EventListStateEnum.WAITING));
+    if (locationModel.data!.value.state == LocationStateEnum.DENIED) return Stream.value(EventListModel(state: EventListStateEnum.DENIED));
 
-  if (locationModel.data!.value.state == LocationStateEnum.DENIED) return Stream.value(EventListModel(state: EventListStateEnum.DENIED));
+    if (locationModel.data!.value.state == LocationStateEnum.FAIL) return Stream.value(EventListModel(state: EventListStateEnum.FAIL));
 
-  if (locationModel.data!.value.state == LocationStateEnum.FAIL) return Stream.value(EventListModel(state: EventListStateEnum.FAIL));
+    return ref.read(databaseServiceProvider).streamEventsWithin(center: GeoFirePoint(locationModel.data!.value.latitude!, locationModel.data!.value.longitude!), radius: double.infinity).map((List<EventModel> events) => EventListModel(state: EventListStateEnum.SUCCESS, events: events));
+  }
 
-  return ref.read(databaseServiceProvider).streamEventsWithin(center: GeoFirePoint(locationModel.data!.value.latitude!, locationModel.data!.value.longitude!), radius: double.infinity).map((List<EventModel> events) => EventListModel(state: EventListStateEnum.SUCCESS, events: events));
+  return ref.read(databaseServiceProvider).streamEventsWithin(center: GeoFirePoint(selectedPlace!.center[0], selectedPlace.center[1]), radius: double.infinity).map((List<EventModel> events) => EventListModel(state: EventListStateEnum.SUCCESS, events: events));
 });
 
 final placesSearchFutureProvider = FutureProvider.family<List<MapBoxPlace>, String>((ref, value) => ref.read(placesServiceProvider).searchPlace(value));
@@ -79,3 +91,5 @@ final panelControllerProvider = Provider<PanelController>((ref) => PanelControll
 final searchInputProvider = StateNotifierProvider<StringStartingWithEmptyStateNotifier, String>((ref) => StringStartingWithEmptyStateNotifier());
 
 final searchIsOpenProvider = StateNotifierProvider<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
+
+final mapControllerProvider = StateNotifierProvider<MapControllerStartingWithNullStateNotifier, MapController?>((ref) => MapControllerStartingWithNullStateNotifier());
