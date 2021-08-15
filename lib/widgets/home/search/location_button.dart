@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:scial/enums/selected_center_enum.dart';
 import 'package:scial/providers/providers.dart';
 import 'package:scial/themes/palette.dart';
+import 'package:scial/enums/location_state_enum.dart';
+import 'package:scial/models/location_model.dart';
 
 class LocationButton extends ConsumerWidget {
 
@@ -23,6 +26,16 @@ class LocationButton extends ConsumerWidget {
     
     return RawMaterialButton(
       onPressed: () async {
+        if (mapController != null) {
+          LocationModel locationModel = await context.read(currentLocationFutureProvider.future);
+          
+          if (locationModel.state == LocationStateEnum.SUCCESS) {
+            if (mapController.center != LatLng(locationModel.latitude!, locationModel.longitude!)) {
+              mapController.move(LatLng(locationModel.latitude!, locationModel.longitude!), 13.0);
+            }
+          }
+        }
+        
         if (selectedCenter != SelectedCenterEnum.LOCATION) {
           context.read(selectedCenterProvider.notifier).update(SelectedCenterEnum.LOCATION);
           context.read(selectedPlaceProvider.notifier).update(null);

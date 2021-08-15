@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapbox_search/mapbox_search.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:scial/enums/selected_center_enum.dart';
@@ -23,11 +25,18 @@ class SearchResultsListItem extends ConsumerWidget {
     final SelectedCenterEnum selectedCenter = watch(selectedCenterProvider);
     final bool isOpen = watch(searchIsOpenProvider);
     final PanelController panelController = watch(panelControllerProvider);
+    final MapController? mapController = watch(mapControllerProvider);
     
     return SizedBox(
       height: 60.0,
       child: RawMaterialButton(
         onPressed: () async {
+          if (mapController != null) {
+            if (mapController.center != LatLng(place.center[0], place.center[1])) {
+              mapController.move(LatLng(place.center[0], place.center[1]), 13.0);
+            }
+          }
+
           context.read(selectedPlaceProvider.notifier).update(place);
           
           if (selectedCenter != SelectedCenterEnum.PLACE) context.read(selectedCenterProvider.notifier).update(SelectedCenterEnum.PLACE);
