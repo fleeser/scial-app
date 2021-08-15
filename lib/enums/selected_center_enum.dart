@@ -1,0 +1,4 @@
+enum SelectedCenterEnum {
+  LOCATION,
+  PLACE
+}
