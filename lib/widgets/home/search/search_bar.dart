@@ -16,6 +16,7 @@ class SearchBar extends ConsumerWidget {
 
     final PanelController panelController = watch(panelControllerProvider);
     final bool isOpen = watch(searchIsOpenProvider);
+    final bool addFloatingActionButtonIsShown = watch(addFloatingActionButtonIsShownProvider);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -38,6 +39,7 @@ class SearchBar extends ConsumerWidget {
                 onTap: () async {
                   if (panelController.isPanelOpen) await panelController.close();
 
+                  if (addFloatingActionButtonIsShown) context.read(addFloatingActionButtonIsShownProvider.notifier).trigger();
                   if (panelController.isPanelShown) await panelController.hide();
 
                   if (!isOpen) context.read(searchIsOpenProvider.notifier).trigger();
@@ -48,6 +50,7 @@ class SearchBar extends ConsumerWidget {
                   if (isOpen) context.read(searchIsOpenProvider.notifier).trigger();
 
                   if (!panelController.isPanelShown) await panelController.show();
+                  if (!addFloatingActionButtonIsShown) context.read(addFloatingActionButtonIsShownProvider.notifier).trigger();
                 },
                 onChanged: (String input) {
                   context.read(searchInputProvider.notifier).update(input);
