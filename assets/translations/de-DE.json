@@ -4,5 +4,16 @@
     "email" : "E-Mail",
     "password" : "Passwort",
     "forgot_password" : "Passwort vergessen",
-    "no_account" : "Du hast keinen Account"
+    "no_account" : "Du hast keinen Account",
+    
+    "panel_drag_up" : "Hier unten geht die Party",
+    "search_here" : "Hier suchen",
+    "my_location" : "Mein Standort",
+    "no_events_found" : "Keine Events in dieser Umgebung gefunden.",
+    "error_loading" : "Beim Laden ist ein Fehler aufgetreten.",
+    "location_denied" : "Sie haben die Standort-Funktion abgelehnt.",
+    "location_fail" : "Wir konnten Ihren Standort nicht genau identifizieren.",
+    "search" : "Suche",
+    "use_my_location" : "Meinen Standort benutzen",
+    "no_places_found" : "Deine Suche ergab keine Treffer."
 }

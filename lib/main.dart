@@ -1,24 +1,18 @@
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
-import 'package:firebase_core/firebase_core.dart' as FirebaseCoreStandard;
-import 'package:firedart/firedart.dart' as FirebaseWindowsLinux;
-import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuthStandard;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 
-import 'package:scial/exclusives/preferences_store.dart';
 import 'package:scial/providers/providers.dart';
 import 'package:scial/screens/auth/sign_in/sign_in_screen.dart';
+import 'package:scial/screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) FirebaseWindowsLinux.FirebaseAuth.initialize('AIzaSyDm9nOXkJAHXrwe3Tm9TIX4GAlSQjGC_og', await PreferencesStore.create());
-  else await FirebaseCoreStandard.Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   await EasyLocalization.ensureInitialized();
 
@@ -35,15 +29,6 @@ void main() async {
       )
     )
   );
-
-  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
-    doWhenWindowReady(() {
-      appWindow.minSize = Size(600, 450);
-      appWindow.size = Size(600, 450);
-      appWindow.alignment = Alignment.center;
-      appWindow.show();
-    });
-  }
 }
 
 class App extends StatelessWidget {
@@ -69,20 +54,10 @@ class Root extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
 
-    if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
-      final AsyncValue<bool> authStateWindowsLinux = watch(authStateWindowsLinuxProvider);
+    final AsyncValue<User?> authState = watch(authStateProvider);
 
-      return authStateWindowsLinux.when(
-        data: (bool isSignedIn) => isSignedIn ? Container(color: Colors.green) : SignInScreen(),
-        loading: () => Container(color: Colors.yellow), 
-        error: (Object e, StackTrace? s) => Container(color: Colors.red)
-      );
-    }
-
-    final AsyncValue<FirebaseAuthStandard.User?> authStateStandard = watch(authStateStandardProvider);
-
-    return authStateStandard.when(
-      data: (FirebaseAuthStandard.User? user) => user != null ? Container(color: Colors.green) : SignInScreen(),
+    return authState.when(
+      data: (User? user) => user != null ?HomeScreen() : SignInScreen(),
       loading: () => Container(color: Colors.yellow), 
       error: (Object e, StackTrace? s) => Container(color: Colors.red)
     );

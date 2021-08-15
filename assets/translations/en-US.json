@@ -4,5 +4,16 @@
     "email" : "E-Mail",
     "password" : "Password",
     "forgot_password" : "Forgot Password",
-    "no_account" : "You don't have an account"
+    "no_account" : "You don't have an account",
+
+    "panel_drag_up" : "The party is down here",
+    "search_here" : "Search here",
+    "my_location" : "My location",
+    "no_events_found" : "No events found in this area.",
+    "error_loading" : "An error occured while loading.",
+    "location_denied" : "You denied on your location.",
+    "location_fail" : "We could not find your exact location.",
+    "search" : "Search",
+    "use_my_location" : "Use my location",
+    "no_places_found" : "No places found for your search."
 }
