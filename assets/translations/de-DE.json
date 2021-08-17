@@ -23,5 +23,7 @@
     "netflix_and_chill" : "Netflix & Chill",
     "where" : "Wo",
     "create_event" : "Erstellen",
-    "press_to_pick_image" : "Zum Auswählen tippen."
+    "press_to_pick_image" : "Zum Auswählen tippen.",
+    "change" : "Ändern",
+    "remove" : "Entfernen"
 }
