@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:scial/models/event_model.dart';
@@ -20,12 +21,42 @@ class EventListItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
       child: Row(
         children: [
-          Container(
+          event.imageUrl != null ? CachedNetworkImage(
+            imageUrl: event.imageUrl!,
+            imageBuilder: (BuildContext context, ImageProvider imageProvider) => Container(
+              width: 48.0,
+              height: 48.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: Palette.gray800,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover
+                )
+              )
+            ),
+            placeholder: (BuildContext context, String url) => Container(
+              width: 48.0,
+              height: 48.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: Palette.gray800
+              )
+            ),
+            errorWidget: (BuildContext context, String url, dynamic e) => Container(
+              width: 48.0,
+              height: 48.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: Palette.gray800
+              )
+            )
+          ) : Container(
             width: 48.0,
             height: 48.0,
             decoration: BoxDecoration(
-              color: Palette.gray800,
-              borderRadius: BorderRadius.circular(12.0)
+              borderRadius: BorderRadius.circular(12.0),
+              color: Palette.gray800
             )
           ),
           SizedBox(width: 24.0),
