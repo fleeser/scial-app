@@ -28,7 +28,8 @@ class DatabaseService implements BaseDatabaseService {
       await eventsReference.add({
         'title' : eventModel.title,
         'category' : eventModel.eventCategoryEnum.value,
-        'position' : geoflutterfire.point(latitude: eventModel.latitude, longitude: eventModel.longitude).data
+        'position' : geoflutterfire.point(latitude: eventModel.latitude, longitude: eventModel.longitude).data,
+        'placeName' : eventModel.placeName
       });
       return true;
     } catch (e) {
