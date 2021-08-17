@@ -26,6 +26,7 @@ class SearchResultsListItem extends ConsumerWidget {
     final bool isOpen = watch(searchIsOpenProvider);
     final PanelController panelController = watch(panelControllerProvider);
     final MapController? mapController = watch(mapControllerProvider);
+    final bool addFloatingActionButtonIsShown = watch(addFloatingActionButtonIsShownProvider);
     
     return SizedBox(
       height: 60.0,
@@ -43,6 +44,7 @@ class SearchResultsListItem extends ConsumerWidget {
 
           FocusScope.of(context).unfocus();
           if (isOpen) context.read(searchIsOpenProvider.notifier).trigger();
+          if (!addFloatingActionButtonIsShown) context.read(addFloatingActionButtonIsShownProvider.notifier).trigger();
           if (!panelController.isPanelShown) await panelController.show();
         },
         padding: EdgeInsets.symmetric(horizontal: 24.0),
