@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:scial/modals/choose_image_action_modal.dart';
 import 'package:scial/providers/providers.dart';
 import 'package:scial/services/picker_service.dart';
 import 'package:scial/themes/palette.dart';
@@ -32,7 +33,23 @@ class FileImageWidget extends ConsumerWidget {
               context.read(selectedFileProvider.notifier).update(File(file.path));
             }
           } else {
-            print("Choose wether to pick or delete");
+            await showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (BuildContext context) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom + 24.0,
+                    left: 24.0,
+                    right: 24.0
+                  ),
+                  child: ChooseImageActionModal(
+                    onChangePressed: () => print("This does not work properly"),
+                    onRemovePressed: () => context.read(selectedFileProvider.notifier).update(null)
+                  )
+                );
+              }
+            );
           }
         },
         fillColor: Palette.gray800,

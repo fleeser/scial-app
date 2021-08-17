@@ -66,5 +66,5 @@ class SearchModelStartingWithNullStateNotifierProvider extends StateNotifier<Sea
 class FileStartingWithNullStateNotifier extends StateNotifier<File?> {
   FileStartingWithNullStateNotifier() : super(null);
 
-  void update(File value) => state = value;
+  void update(File? value) => state = value;
 }
