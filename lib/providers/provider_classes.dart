@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapbox_search/mapbox_search.dart';
@@ -59,4 +61,10 @@ class SearchModelStartingWithNullStateNotifierProvider extends StateNotifier<Sea
   SearchModelStartingWithNullStateNotifierProvider() : super(null);
 
   void update(SearchModel value) => state = value;
+}
+
+class FileStartingWithNullStateNotifier extends StateNotifier<File?> {
+  FileStartingWithNullStateNotifier() : super(null);
+
+  void update(File value) => state = value;
 }
