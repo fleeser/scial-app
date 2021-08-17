@@ -11,6 +11,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType textInputType;
   final IconData icon;
   final bool obscureText;
+  final BorderRadiusGeometry? borderRadius;
+  final Function(String)? onChanged;
 
   const CustomTextField({ 
     this.controller,
@@ -19,7 +21,9 @@ class CustomTextField extends StatelessWidget {
     this.obscurePressed,
     this.textInputType = TextInputType.text,
     required this.icon,
-    this.obscureText = false
+    this.obscureText = false,
+    this.borderRadius,
+    this.onChanged
   });
 
   @override
@@ -28,14 +32,14 @@ class CustomTextField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24.0),
       decoration: BoxDecoration(
         color: Palette.gray800,
-        borderRadius: BorderRadius.circular(12.0)
+        borderRadius: borderRadius == null ? BorderRadius.circular(12.0) : borderRadius
       ),
-      child: Row(children: textFieldChildren(icon: icon, isPasswordField: isPasswordField, controller: controller, hintText: hintText, textInputType: textInputType, obscureText: obscureText, obscurePressed: obscurePressed))
+      child: Row(children: textFieldChildren(icon: icon, isPasswordField: isPasswordField, controller: controller, hintText: hintText, textInputType: textInputType, obscureText: obscureText, obscurePressed: obscurePressed, onChanged: onChanged))
     );
   }
 }
 
-List<Widget> textFieldChildren({ required IconData icon, required bool isPasswordField, TextEditingController? controller, required String hintText, required TextInputType textInputType, required bool obscureText, VoidCallback? obscurePressed }) {
+List<Widget> textFieldChildren({ required IconData icon, required bool isPasswordField, TextEditingController? controller, required String hintText, required TextInputType textInputType, required bool obscureText, VoidCallback? obscurePressed, Function(String)? onChanged }) {
   List<Widget> list = <Widget>[
     Icon(
       icon,
@@ -47,6 +51,7 @@ List<Widget> textFieldChildren({ required IconData icon, required bool isPasswor
       child: Container(
         height: 52.0,
         child: TextField(
+          onChanged: (String text) => onChanged != null ? onChanged(text) : null,
           autocorrect: false,
           autofocus: false,
           obscureText: obscureText,
