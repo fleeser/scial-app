@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scial/providers/providers.dart';
+import 'package:scial/routes.dart';
 import 'package:scial/screens/auth/sign_in/sign_in_screen.dart';
 import 'package:scial/screens/home/home_screen.dart';
 
@@ -15,6 +16,8 @@ void main() async {
   await Firebase.initializeApp();
 
   await EasyLocalization.ensureInitialized();
+
+  Routes.createRoutes();
 
   runApp(
     ProviderScope(
@@ -41,6 +44,8 @@ class App extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      navigatorKey: Routes.seafarer.navigatorKey,
+      onGenerateRoute: Routes.seafarer.generator(),
       debugShowCheckedModeBanner: false,
       home: Root()
     );
