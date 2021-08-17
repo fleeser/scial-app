@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -10,7 +12,7 @@ import 'package:scial/models/search_model.dart';
 import 'package:scial/providers/providers.dart';
 import 'package:scial/routes.dart';
 import 'package:scial/services/database_service.dart';
-import 'package:scial/themes/palette.dart';
+import 'package:scial/widgets/home/add/file_image_widget.dart';
 import 'package:scial/widgets/custom_text_field.dart';
 import 'package:scial/widgets/default_button.dart';
 import 'package:scial/widgets/dropdown/custom_dropdown.dart';
@@ -31,14 +33,11 @@ class AddModal extends ConsumerWidget {
     final String whereText = watch(whereTextProvider);
     final TextEditingController titleController = watch(titleControllerProvider);
     final TextEditingController whereController = watch(whereControllerProvider);
+    final File? imageFile = watch(selectedFileProvider);
 
     return ListView(
       children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 3.0,
-          color: Palette.blue500
-        ),
+        FileImageWidget(),
         Padding(
           padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 24.0),
           child: CustomTextField(
@@ -79,13 +78,14 @@ class AddModal extends ConsumerWidget {
               context.read(createEventIsLoadingProvider.notifier).trigger();
 
               bool success = await databaseService.addEvent(
-                EventModel(
+                eventModel: EventModel(
                   title: titleText,
                   placeName: searchModel!.name,
                   eventCategoryEnum: categoryFromValue(selectedCategory!),
                   latitude: searchModel.latitude,
                   longitude: searchModel.longitude
-                )
+                ),
+                imageFile: imageFile
               );
 
               context.read(createEventIsLoadingProvider.notifier).trigger();
@@ -96,7 +96,7 @@ class AddModal extends ConsumerWidget {
             },
             text: 'create_event'.tr(),
             isLoading: isLoading
-          ),
+          )
         )
       ]
     );
