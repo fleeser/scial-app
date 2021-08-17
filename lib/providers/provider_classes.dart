@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapbox_search/mapbox_search.dart';
 
 import 'package:scial/enums/selected_center_enum.dart';
+import 'package:scial/models/search_model.dart';
 
 class BooleanStartingWithFalseStateNotifier extends StateNotifier<bool> {
   BooleanStartingWithFalseStateNotifier() : super(false);
@@ -46,4 +49,22 @@ class DoubleStartingWithGivenValueStateNotifier extends StateNotifier<double> {
   DoubleStartingWithGivenValueStateNotifier(this.startingValue) : super(startingValue);
 
   void changeTo(double value) => state = value;
+}
+
+class IntegerStartingWithNullStateNotifierProvider extends StateNotifier<int?> {
+  IntegerStartingWithNullStateNotifierProvider() : super(null);
+
+  void update(int value) => state = value;
+}
+
+class SearchModelStartingWithNullStateNotifierProvider extends StateNotifier<SearchModel?> {
+  SearchModelStartingWithNullStateNotifierProvider() : super(null);
+
+  void update(SearchModel value) => state = value;
+}
+
+class FileStartingWithNullStateNotifier extends StateNotifier<File?> {
+  FileStartingWithNullStateNotifier() : super(null);
+
+  void update(File? value) => state = value;
 }

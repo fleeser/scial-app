@@ -15,5 +15,15 @@
     "location_fail" : "We could not find your exact location.",
     "search" : "Search",
     "use_my_location" : "Use my location",
-    "no_places_found" : "No places found for your search."
+    "no_places_found" : "No places found for your search.",
+    "title" : "Title",
+    "category" : "Category",
+    "party" : "Party",
+    "sports" : "Sports",
+    "netflix_and_chill" : "Netflix & Chill",
+    "where" : "Where",
+    "create_event" : "Create",
+    "press_to_pick_image" : "Press to choose.",
+    "change" : "Change",
+    "remove" : "Remove"
 }

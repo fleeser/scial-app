@@ -47,6 +47,8 @@
 	<string>???</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>???</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>???</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

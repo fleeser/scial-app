@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -7,9 +9,10 @@ import 'package:scial/extensions/collection_extension.dart';
 import 'package:scial/extensions/event_category_extension.dart';
 import 'package:scial/models/event_model.dart';
 import 'package:scial/providers/providers.dart';
+import 'package:scial/services/storage_service.dart';
 
 abstract class BaseDatabaseService {
-  Future<bool> addEvent(EventModel eventModel);
+  Future<bool> addEvent({ required EventModel eventModel, File? imageFile });
   Stream<List<EventModel>> streamEventsWithin({ required GeoFirePoint center, required double radius });
 }
 
@@ -21,15 +24,29 @@ class DatabaseService implements BaseDatabaseService {
   FirebaseFirestore get firestore => _read(firebaseFirestoreProvider);
   Geoflutterfire get geoflutterfire => _read(geoflutterfireProvider);
 
+  StorageService get storageService => _read(storageServiceProvider);
+
   CollectionReference get eventsReference => firestore.collection(CollectionEnum.EVENTS.ref);
 
-  Future<bool> addEvent(EventModel eventModel) async {
+  @override
+  Future<bool> addEvent({ required EventModel eventModel, File? imageFile }) async {
+
+    String? imageUrl;
+    if (imageFile != null) {
+      imageUrl = await storageService.uploadImage(imageFile);
+    }
+
+    Map<String, dynamic> map = {
+      'title' : eventModel.title,
+      'category' : eventModel.eventCategoryEnum.value,
+      'position' : geoflutterfire.point(latitude: eventModel.latitude, longitude: eventModel.longitude).data,
+      'placeName' : eventModel.placeName
+    };
+
+    if (imageUrl != null) map['imageUrl'] = imageUrl;
+
     try {
-      await eventsReference.add({
-        'title' : eventModel.title,
-        'category' : eventModel.eventCategoryEnum.value,
-        'position' : geoflutterfire.point(latitude: eventModel.latitude, longitude: eventModel.longitude).data
-      });
+      await eventsReference.add(map);
       return true;
     } catch (e) {
       print('Unknown error');
