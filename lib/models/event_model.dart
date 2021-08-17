@@ -7,12 +7,14 @@ class EventModel {
   final double latitude;
   final double longitude;
   final String title;
+  final String placeName;
   final EventCategoryEnum eventCategoryEnum;
 
   const EventModel({
     required this.latitude,
     required this.longitude,
     required this.title,
+    required this.placeName,
     required this.eventCategoryEnum
   });
 
@@ -21,6 +23,7 @@ class EventModel {
       latitude: (Map<String, dynamic>.from(map['position'])['geopoint'] as GeoPoint).latitude,
       longitude: (Map<String, dynamic>.from(map['position'])['geopoint'] as GeoPoint).longitude,
       title: map['title'],
+      placeName: map['placeName'],
       eventCategoryEnum: categoryFromValue(map['category'])
     );
   }
