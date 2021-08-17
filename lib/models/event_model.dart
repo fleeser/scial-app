@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:scial/enums/event_category_enum.dart';
@@ -8,6 +10,7 @@ class EventModel {
   final double longitude;
   final String title;
   final String placeName;
+  final String? imageUrl;
   final EventCategoryEnum eventCategoryEnum;
 
   const EventModel({
@@ -15,6 +18,7 @@ class EventModel {
     required this.longitude,
     required this.title,
     required this.placeName,
+    this.imageUrl,
     required this.eventCategoryEnum
   });
 
@@ -24,6 +28,7 @@ class EventModel {
       longitude: (Map<String, dynamic>.from(map['position'])['geopoint'] as GeoPoint).longitude,
       title: map['title'],
       placeName: map['placeName'],
+      imageUrl: map['imageUrl'],
       eventCategoryEnum: categoryFromValue(map['category'])
     );
   }
