@@ -13,6 +13,7 @@ import 'package:scial/enums/event_list_state_enum.dart';
 import 'package:scial/enums/location_state_enum.dart';
 import 'package:scial/models/event_list_model.dart';
 import 'package:scial/models/event_model.dart';
+import 'package:scial/models/search_model.dart';
 import 'package:scial/models/location_model.dart';
 import 'package:scial/enums/selected_center_enum.dart';
 import 'package:scial/services/auth_service.dart';
@@ -97,3 +98,21 @@ final mapControllerProvider = StateNotifierProvider<MapControllerStartingWithNul
 final addFloatingActionButtonPositionProvider = StateNotifierProvider.family<DoubleStartingWithGivenValueStateNotifier, double, double>((ref, value) => DoubleStartingWithGivenValueStateNotifier(value));
 
 final addFloatingActionButtonIsShownProvider = StateNotifierProvider<BooleanStartingWithTrueStateNotifier, bool>((ref) => BooleanStartingWithTrueStateNotifier());
+
+// ADD
+
+final titleTextProvider = StateNotifierProvider<StringStartingWithEmptyStateNotifier, String>((ref) => StringStartingWithEmptyStateNotifier());
+
+final titleControllerProvider = Provider<TextEditingController>((ref) => TextEditingController());
+
+final whereTextProvider = StateNotifierProvider<StringStartingWithEmptyStateNotifier, String>((ref) => StringStartingWithEmptyStateNotifier());
+
+final whereControllerProvider = Provider<TextEditingController>((ref) => TextEditingController());
+
+final categorySelectorIsOpenProvider = StateNotifierProvider<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
+
+final selectedCategoryProvider = StateNotifierProvider<IntegerStartingWithNullStateNotifierProvider, int?>((ref) => IntegerStartingWithNullStateNotifierProvider());
+
+final createEventIsLoadingProvider = StateNotifierProvider.autoDispose<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
+
+final searchModelProvider = StateNotifierProvider<SearchModelStartingWithNullStateNotifierProvider, SearchModel?>((ref) => SearchModelStartingWithNullStateNotifierProvider());
