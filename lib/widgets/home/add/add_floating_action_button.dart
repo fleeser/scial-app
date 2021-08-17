@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:scial/modals/add_model.dart';
+import 'package:scial/modals/add_modal.dart';
 import 'package:scial/themes/palette.dart';
 
 class AddFloatingActionButton extends StatelessWidget {
