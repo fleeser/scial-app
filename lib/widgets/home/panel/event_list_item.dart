@@ -1,7 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:scial/models/event_model.dart';
+import 'package:scial/routes.dart';
 import 'package:scial/themes/palette.dart';
 import 'package:scial/extensions/event_category_extension.dart';
 
@@ -17,7 +19,7 @@ class EventListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      onPressed: () {},
+      onPressed: () => Routes.navigateToDetailsScreen(event: event),
       padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
       child: Row(
         children: [
