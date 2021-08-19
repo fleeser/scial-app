@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
+import 'package:scial/routes.dart';
 import 'package:scial/themes/palette.dart';
 
 class CustomAppBar extends StatelessWidget {
 
   final bool hasBackButton;
   final String? title;
+  final Color color;
 
   CustomAppBar({
     this.hasBackButton = false, 
-    this.title
+    this.title,
+    this.color = Palette.gray900
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: color,
       height: MediaQuery.of(context).padding.top + kToolbarHeight,
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top,
@@ -39,7 +43,7 @@ class CustomAppBar extends StatelessWidget {
   Widget backButton(BuildContext context) {
     return CustomAppBarButton(
       icon: Icons.arrow_back_rounded,
-      onPressed: () => print('I should go back')
+      onPressed: () => Routes.navigateBack()
     );
   }
 
