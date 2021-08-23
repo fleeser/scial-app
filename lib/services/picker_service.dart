@@ -24,7 +24,7 @@ class PickerService implements BasePickerService {
   Future<File?> pickImageFromGallery() async {
 
     if (!kIsWeb && Platform.isMacOS) {
-      FilePickerResult? result = await filePicker.pickFiles();
+      FilePickerResult? result = await filePicker.pickFiles(type: FileType.image);
       if (result != null) {
         String? path = result.files.single.path;
         if (path != null) return File(path);
