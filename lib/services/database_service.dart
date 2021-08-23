@@ -6,20 +6,21 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 
 import 'package:scial/enums/collection_enum.dart';
 import 'package:scial/extensions/collection_extension.dart';
-import 'package:scial/extensions/event_category_extension.dart';
 import 'package:scial/models/event_model.dart';
+import 'package:scial/models/upload_event_model.dart';
 import 'package:scial/models/user_model.dart';
 import 'package:scial/providers/providers.dart';
 import 'package:scial/services/auth_service.dart';
 import 'package:scial/services/storage_service.dart';
 
 abstract class BaseDatabaseService {
-  Future<String?> get userImage;
   Future<UserModel?> get user;
-  Future<List<EventModel>> get usersEvents;
-  Future<bool> addEvent({ required EventModel eventModel, File? imageFile });
-  Stream<List<EventModel>> streamEventsWithin({ required GeoFirePoint center, required double radius });
+  Future<String?> get userImage;
+  Future<List<String>> get userEvents;
+  Future<bool> updateUserValue({ required String key, required dynamic value });
   Future<bool> uploadPhoto({ required File file });
+  Future<bool> uploadEvent({ required UploadEventModel eventModel, File? image });
+  Stream<List<EventModel>> streamEventsWithinRadiusFromCenter({ required double latitude, required double longitude, required double radius });
 }
 
 class DatabaseService implements BaseDatabaseService {
@@ -36,31 +37,20 @@ class DatabaseService implements BaseDatabaseService {
   CollectionReference get usersReference => firestore.collection(CollectionEnum.USERS.ref);
   CollectionReference get eventsReference => firestore.collection(CollectionEnum.EVENTS.ref);
 
-  @override
-  Future<String?> get userImage async {
-    try {
-      DocumentSnapshot<Object?> snapshot = await usersReference.doc(authService.uid).get();
+  DocumentReference<Object?>? get userDocument => authService.uid != null ? usersReference.doc(authService.uid!) : null;
 
-      if (snapshot.exists && snapshot.data() != null) {
-        Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
-        
-        return map['image'];
-      }
-    } catch (e) {
-      print('Unknown error');
-    }
-
-    return null;
-  }
+  Future<DocumentSnapshot<Object?>?> get userSnapshot async => userDocument != null ? userDocument!.get() : null;
 
   @override
   Future<UserModel?> get user async {
     try {
-      DocumentSnapshot<Object?> snapshot = await usersReference.doc(authService.uid).get();
+      DocumentSnapshot<Object?>? snapshot = await userSnapshot;
 
-      if (snapshot.exists && snapshot.data() != null) {
-        Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
-        return UserModel.fromMap(map);
+      if (snapshot != null) {
+        if (snapshot.exists && snapshot.data() != null) {
+          	Map<String, dynamic> map = snapshot.data()! as Map<String, dynamic>;
+            return UserModel.fromMap(map);
+        }
       }
     } catch (e) {
       print('Unknown error');
@@ -70,110 +60,74 @@ class DatabaseService implements BaseDatabaseService {
   }
 
   @override
-  Future<List<EventModel>> get usersEvents async {
-    try {
-      DocumentSnapshot<Object?> snapshot = await usersReference.doc(authService.uid).get();
-
-      if (snapshot.exists && snapshot.data() != null) {
-        Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
-
-        List<String> eventIDs = List<String>.from(map['events']);
-
-        List<EventModel> events = <EventModel>[];
-        for (String eventID in eventIDs) {
-          DocumentSnapshot<Object?> nestedSnapshot = await eventsReference.doc(eventID).get();
-
-          if (nestedSnapshot.exists && nestedSnapshot.data() != null) {
-            Map<String, dynamic> nestedMap = nestedSnapshot.data() as Map<String, dynamic>;
-            events.add(EventModel.fromMap(nestedMap));
-          }
-        }
-
-        return events;
-      }
-    } catch (e) {
-      print('Unknown error');
-    }
-
-    return <EventModel>[];
-  }
+  Future<String?> get userImage async => (await user)?.imageUrl;
 
   @override
-  Future<bool> addEvent({ required EventModel eventModel, File? imageFile }) async {
+  Future<List<String>> get userEvents async => (await user)?.events ?? <String>[];
 
-    String? imageUrl;
-    if (imageFile != null) {
-      imageUrl = await storageService.uploadImage(imageFile);
-    }
-
-    Map<String, dynamic> map = {
-      'title' : eventModel.title,
-      'category' : eventModel.eventCategoryEnum.value,
-      'position' : geoflutterfire.point(latitude: eventModel.latitude, longitude: eventModel.longitude).data,
-      'placeName' : eventModel.placeName
-    };
-
-    if (imageUrl != null) map['imageUrl'] = imageUrl;
-
-    try {
-      await eventsReference.add(map);
-      return true;
-    } catch (e) {
-      print('Unknown error');
+  @override
+  Future<bool> updateUserValue({ required String key, required dynamic value }) async {
+    if (userDocument != null) {
+      try {
+        await userDocument!.update({ "$key" : value });
+        return true;
+      } catch (e) {
+        print('Unknown error');
+      }
     }
 
     return false;
-  }
-
-  @override
-  Stream<List<EventModel>> streamEventsWithin({ required GeoFirePoint center, required double radius }) {
-    return geoflutterfire.collection(collectionRef: eventsReference).within(center: center, radius: radius, field: 'position').map((List<DocumentSnapshot<Map<String, dynamic>>> eventsList) {
-      List<EventModel> list = <EventModel>[]; 
-      
-      eventsList.forEach((DocumentSnapshot<Map<String, dynamic>> snapshot) {
-        list.add(EventModel.fromMap(snapshot.data()!));
-      });
-
-      return list;
-    });
   }
 
   @override
   Future<bool> uploadPhoto({ required File file }) async {
+    String? oldPhotoUrl = await userImage;
 
-    // TODO: differentiate functions
+    if (oldPhotoUrl != null) {
+      bool successDeletePhoto = await storageService.deleteImage(url: oldPhotoUrl);
+
+      if (!successDeletePhoto) return false;
+    }
+
+    String? newPhotoUrl = await storageService.uploadImage(file: file);
+
+    if (newPhotoUrl == null) return false;
+
+    bool successUpdatePhotoUrl = await updateUserValue(key: 'image', value: newPhotoUrl);
+
+    if (successUpdatePhotoUrl) return true;
+    else return false;
+  }
+
+  @override
+  Future<bool> uploadEvent({ required UploadEventModel eventModel, File? image }) async {
+
+    String? imageUrl;
+    if (image != null) {
+      imageUrl = await storageService.uploadImage(file: image);
+
+      if (imageUrl == null) return false;
+    }
+
+    Map<String, dynamic> map = eventModel.toMap();
+
+    if (imageUrl != null) map['image'] = imageUrl;
 
     try {
-      String? oldPhotoUrl;
-
-      DocumentSnapshot<Object?> snapshot = await usersReference.doc(authService.uid).get();
-
-      if (snapshot.exists && snapshot.data() != null) {
-        Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
-
-        oldPhotoUrl = map['image'];
-      }
-
-      if (oldPhotoUrl != null) {
-        bool success = await storageService.deleteImage(oldPhotoUrl);
-
-        if (!success) return false;
-      }
-
-      String? newPhotoUrl = await storageService.uploadImage(file);
-
-      if (newPhotoUrl == null) return false;
-
-      await usersReference.doc(authService.uid).update({ 'image' : newPhotoUrl });
-
-      return true;
+      DocumentReference<Object?> reference = await eventsReference.add(map);
+      bool success = await updateUserValue(key: 'events', value: FieldValue.arrayUnion([reference.id]));
+      return success;
     } catch (e) {
       print('Unknown error');
     }
-    // find in storage and delete if there
-    // add to storage and get string
-    // store sstring in users image parameter
-    // TODO
+
     return false;
+  }
+
+
+
+  @override
+  Stream<List<EventModel>> streamEventsWithinRadiusFromCenter({ required double latitude, required double longitude, required double radius }) {
+    return geoflutterfire.collection(collectionRef: eventsReference).within(center: GeoFirePoint(latitude, longitude), radius: radius, field: 'position').map((List<DocumentSnapshot<Map<String, dynamic>>> list) => list.map((DocumentSnapshot<Map<String, dynamic>> snapshot) => EventModel.fromMap(snapshot.data()!)).toList());
   }
 }
