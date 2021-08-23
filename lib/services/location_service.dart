@@ -22,7 +22,7 @@ class LocationService implements BaseLocationService {
 
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
-      if (!serviceEnabled) return LocationModel(state: LocationStateEnum.DENIED);
+      if (!serviceEnabled) return LocationModel(state: LocationStateEnum.OFFSERVICE);
     }
 
     PermissionStatus permissionStatus = await location.hasPermission();
