@@ -68,3 +68,11 @@ class FileStartingWithNullStateNotifier extends StateNotifier<File?> {
 
   void update(File? value) => state = value;
 }
+
+class FileStartingWithGivenValueStateNotifier extends StateNotifier<File> {
+  final File file;
+
+  FileStartingWithGivenValueStateNotifier(this.file) : super(file);
+
+  void update(File value) => state = value;
+}
