@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scial/providers/providers.dart';
 
 abstract class BaseAuthService {
-  String get uid;
+  String? get uid;
   Stream<User?> get authStateChanges;
   Future<bool> signIn({ required String email, required String password });
 }
@@ -17,7 +17,7 @@ class AuthService implements BaseAuthService {
   FirebaseAuth get auth => _read(firebaseAuthProvider);
 
   @override
-  String get uid => auth.currentUser!.uid;
+  String? get uid => auth.currentUser?.uid;
 
   @override
   Stream<User?> get authStateChanges => auth.authStateChanges();
