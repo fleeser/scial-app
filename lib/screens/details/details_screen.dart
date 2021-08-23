@@ -107,7 +107,7 @@ class EventImage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height / 3.0,
         decoration: BoxDecoration(
-          color: Palette.gray800,
+          color: Palette.gray900,
           image: DecorationImage(
             image: imageProvider,
             fit: BoxFit.cover
@@ -117,17 +117,17 @@ class EventImage extends StatelessWidget {
       placeholder: (BuildContext context, String url) => Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height / 3.0,
-        color: Palette.gray800
+        color: Palette.gray900
       ),
       errorWidget: (BuildContext context, String url, dynamic e) => Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height / 3.0,
-        color: Palette.gray800
+        color: Palette.gray900
       )
     ) : Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 3.0,
-      color: Palette.gray800
+      color: Palette.gray900
     );
   }
 }
