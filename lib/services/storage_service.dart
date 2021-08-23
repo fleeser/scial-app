@@ -8,8 +8,8 @@ import 'package:scial/extensions/child_extension.dart';
 import 'package:scial/providers/providers.dart';
 
 abstract class BaseStorageService {
-  Future<String?> uploadImage(File imageFile);
-  Future<bool> deleteImage(String url);
+  Future<String?> uploadImage({ required File file });
+  Future<bool> deleteImage({ required String url });
 }
 
 class StorageService implements BaseStorageService {
@@ -20,12 +20,13 @@ class StorageService implements BaseStorageService {
   FirebaseStorage get storage => _read(firebaseStorageProvider);
 
   @override
-  Future<String?> uploadImage(File imageFile) async {
+  Future<String?> uploadImage({ required File file }) async {
     DateTime now = DateTime.now();
+    
     String convertedDateTime = "${now.year.toString()}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')}-${now.hour.toString().padLeft(2,'0')}-${now.minute.toString().padLeft(2,'0')}";
 
     try {
-      TaskSnapshot snapshot = await storage.ref().child(ChildEnum.EVENT_IMAGES.childRef).child('$convertedDateTime.png').putFile(imageFile);
+      TaskSnapshot snapshot = await storage.ref().child(ChildEnum.EVENT_IMAGES.childRef).child('$convertedDateTime.png').putFile(file);
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
       print('Unknown error');
@@ -35,7 +36,7 @@ class StorageService implements BaseStorageService {
   }
 
   @override
-  Future<bool> deleteImage(String url) async {
+  Future<bool> deleteImage({ required String url }) async {
     try {
       await storage.refFromURL(url).delete();
       return true;
