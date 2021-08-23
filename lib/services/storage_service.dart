@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +9,7 @@ import 'package:scial/providers/providers.dart';
 
 abstract class BaseStorageService {
   Future<String?> uploadImage(File imageFile);
+  Future<bool> deleteImage(String url);
 }
 
 class StorageService implements BaseStorageService {
@@ -28,10 +27,22 @@ class StorageService implements BaseStorageService {
     try {
       TaskSnapshot snapshot = await storage.ref().child(ChildEnum.EVENT_IMAGES.childRef).child('$convertedDateTime.png').putFile(imageFile);
       return await snapshot.ref.getDownloadURL();
-    } on FirebaseException {
+    } catch (e) {
       print('Unknown error');
     }
 
     return null;
+  }
+
+  @override
+  Future<bool> deleteImage(String url) async {
+    try {
+      await storage.refFromURL(url).delete();
+      return true;
+    } catch (e) {
+      print('Unknown error here');
+    }
+
+    return false;
   }
 }
