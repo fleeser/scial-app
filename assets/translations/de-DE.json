@@ -25,5 +25,10 @@
     "create_event" : "Erstellen",
     "press_to_pick_image" : "Zum Auswählen tippen.",
     "change" : "Ändern",
-    "remove" : "Entfernen"
+    "remove" : "Entfernen",
+    "profile" : "Profil",
+    "my_events" : "Meine Veranstaltungen",
+    "no_my_events" : "Du hast bisher keine Veranstaltungen veranstaltet.",
+    "upload_new_image_sure" : "Möchtest du dieses Bild hochladen",
+    "upload" : "Hochladen"
 }

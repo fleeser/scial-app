@@ -25,5 +25,10 @@
     "create_event" : "Create",
     "press_to_pick_image" : "Press to choose.",
     "change" : "Change",
-    "remove" : "Remove"
+    "remove" : "Remove",
+    "profile" : "Profile",
+    "my_events" : "My Events",
+    "no_my_events" : "You have no events, yet.",
+    "upload_new_image_sure" : "Would you like to upload this photo",
+    "upload" : "Upload"
 }
