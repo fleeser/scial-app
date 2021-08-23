@@ -15,6 +15,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:scial/services/storage_service.dart';
 import 'package:scial/enums/event_list_state_enum.dart';
+import 'package:scial/models/user_model.dart';
 import 'package:scial/services/picker_service.dart';
 import 'package:scial/enums/location_state_enum.dart';
 import 'package:scial/models/event_list_model.dart';
@@ -67,6 +68,12 @@ final storageServiceProvider = Provider<StorageService>((ref) => StorageService(
 // USER
 
 final authStateProvider = StreamProvider<User?>((ref) => ref.watch(authServiceProvider).authStateChanges);
+
+final userModelProvider = FutureProvider<UserModel?>((ref) => ref.watch(databaseServiceProvider).user);
+
+final userImageProvider = FutureProvider<String?>((ref) => ref.watch(databaseServiceProvider).userImage);
+
+final usersEventsProvider = FutureProvider<List<EventModel>>((ref) => ref.watch(databaseServiceProvider).usersEvents);
 
 // SIGN IN
 
@@ -133,3 +140,7 @@ final createEventIsLoadingProvider = StateNotifierProvider.autoDispose<BooleanSt
 final searchModelProvider = StateNotifierProvider<SearchModelStartingWithNullStateNotifierProvider, SearchModel?>((ref) => SearchModelStartingWithNullStateNotifierProvider());
 
 final selectedFileProvider = StateNotifierProvider<FileStartingWithNullStateNotifier, File?>((ref) => FileStartingWithNullStateNotifier());
+
+final uploadIsLoadingProvider = StateNotifierProvider<BooleanStartingWithFalseStateNotifier, bool>((ref) => BooleanStartingWithFalseStateNotifier());
+
+final selectedImageProvider = StateNotifierProvider.family<FileStartingWithGivenValueStateNotifier, File, File>((ref, value) => FileStartingWithGivenValueStateNotifier(value));
