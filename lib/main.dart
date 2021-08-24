@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scial/providers/providers.dart';
 import 'package:scial/routes.dart';
-import 'package:scial/screens/auth/sign_in/sign_in_screen.dart';
+import 'package:scial/screens/sign_in/sign_in_screen.dart';
 import 'package:scial/screens/home/home_screen.dart';
 
 void main() async {
@@ -59,10 +58,10 @@ class Root extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
 
-    final AsyncValue<User?> authState = watch(authStateProvider);
+    final AsyncValue<bool> isLoggedIn = watch(userIsLoggedInProvider);
 
-    return authState.when(
-      data: (User? user) => user != null ?HomeScreen() : SignInScreen(),
+    return isLoggedIn.when(
+      data: (bool loggedIn) => loggedIn ? HomeScreen() : SignInScreen(),
       loading: () => Container(color: Colors.yellow), 
       error: (Object e, StackTrace? s) => Container(color: Colors.red)
     );

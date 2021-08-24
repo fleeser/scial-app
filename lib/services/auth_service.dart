@@ -5,8 +5,8 @@ import 'package:scial/providers/providers.dart';
 
 abstract class BaseAuthService {
   String? get uid;
-  Stream<User?> get authStateChanges;
-  Future<bool> signIn({ required String email, required String password });
+  Stream<bool> get isLoggedIn;
+  Future<void> signIn({ required String email, required String password });
 }
 
 class AuthService implements BaseAuthService {
@@ -20,13 +20,12 @@ class AuthService implements BaseAuthService {
   String? get uid => auth.currentUser?.uid;
 
   @override
-  Stream<User?> get authStateChanges => auth.authStateChanges();
+  Stream<bool> get isLoggedIn => auth.authStateChanges().map((User? user) => user == null ? false : true);
 
   @override
-  Future<bool> signIn({ required String email, required String password }) async {
+  Future<void> signIn({ required String email, required String password }) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found': print('User not found'); break;
@@ -36,7 +35,5 @@ class AuthService implements BaseAuthService {
     } catch (e) {
       print('Unknown error');
     }
-
-    return false;
   }
 }
