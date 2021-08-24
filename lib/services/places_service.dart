@@ -5,7 +5,7 @@ import 'package:scial/models/place_model.dart';
 import 'package:scial/providers/providers.dart';
 
 abstract class BasePlacesService {
-  Future<List<PlaceModel>> searchPlaces(String? input);
+  Future<List<PlaceModel>> searchPlaces(String input);
 }
 
 class PlacesService implements BasePlacesService {
@@ -16,5 +16,12 @@ class PlacesService implements BasePlacesService {
   PlacesSearch get places => _read(placesProvider);
 
   @override
-  Future<List<PlaceModel>> searchPlaces(String? input) async => input == null ? <PlaceModel>[] : (await places.getPlaces(input)).map((MapBoxPlace place) => PlaceModel.fromMapBoxPlace(place)).toList();
+  Future<List<PlaceModel>> searchPlaces(String input) async {
+    List<MapBoxPlace>? mapBoxPlaces = await places.getPlaces(input);
+
+    if (mapBoxPlaces != null) {
+      mapBoxPlaces.removeWhere((MapBoxPlace mapBoxPlace) => (mapBoxPlace.placeName == null || mapBoxPlace.center == null));
+      return mapBoxPlaces.map((MapBoxPlace mapBoxPlace) => PlaceModel.fromMapBoxPlace(mapBoxPlace)).toList();
+    } else return <PlaceModel>[];
+  }
 }

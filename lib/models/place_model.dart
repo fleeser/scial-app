@@ -13,9 +13,9 @@ class PlaceModel {
 
   factory PlaceModel.fromMapBoxPlace(MapBoxPlace place) {
     return PlaceModel(
-      placeName: place.placeName,
-      latitude: place.center[0],
-      longitude: place.center[1]
+      placeName: place.placeName!,
+      latitude: place.center![0],
+      longitude: place.center![1]
     );
   }
 }
