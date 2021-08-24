@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:scial/themes/palette.dart';
-import 'package:scial/widgets/custom_loading_indicator.dart';
+import 'package:scial/widgets/default_button/default_button_loading.dart';
+import 'package:scial/widgets/default_button/default_button_text.dart';
 
 class DefaultButton extends StatelessWidget {
 
@@ -22,25 +23,17 @@ class DefaultButton extends StatelessWidget {
       height: 52.0,
       width: double.infinity,
       child: RawMaterialButton(
-        onPressed: isLoading ? null : onPressed,
-        fillColor: Palette.blue600,
+        onPressed: _onPressed,
+        enableFeedback: !isLoading,
+        fillColor: isLoading ? Palette.gray400 : Palette.blue600,
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-        child: isLoading ? CustomLoadingIndicator(
-          color: Palette.white,
-          size: 16.0
-        ) : Text(
-          text,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.w600,
-            color: Palette.white,
-            height: 1.0
-          )
-        )
+        child: isLoading ? DefaultButtonLoading() : DefaultButtonText(text: text)
       )
     );
+  }
+
+  void _onPressed() {
+    if (!isLoading && onPressed != null) onPressed!();
   }
 }
