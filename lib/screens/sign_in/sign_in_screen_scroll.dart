@@ -4,36 +4,35 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:scial/helpers.dart';
-import 'package:scial/providers/providers.dart';
 import 'package:scial/themes/palette.dart';
-import 'package:scial/widgets/custom_text_field.dart';
-import 'package:scial/widgets/default_button.dart';
+import 'package:scial/widgets/custom_field/custom_password_field.dart';
+import 'package:scial/widgets/custom_field/custom_text_field.dart';
+import 'package:scial/widgets/default_button/default_button.dart';
 import 'package:scial/widgets/light_button.dart';
 
 class SignInScreenScroll extends ConsumerWidget {
 
-  final Function(String, String) signInPressed;
-  final VoidCallback? obscurePressed;
+  final void Function() signInPressed;
+  final void Function() obscurePasswordPressed;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final bool isLoading;
-  final bool obscureText;
+  final bool obscurePassword;
 
   const SignInScreenScroll({ 
     Key? key,
     required this.emailController,
     required this.passwordController,
     required this.signInPressed,
-    required this.obscurePressed,
+    required this.obscurePasswordPressed,
     required this.isLoading,
-    required this.obscureText
+    required this.obscurePassword
   }) : super(key: key);
+
+  // TODO: Scroll has padding without me knowing
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-
-    final bool isLoading = watch(signInIsLoadingProvider);
-    
     return SingleChildScrollView(
       child: Container(
         height: getNeededScrollHeight(context, widgetsHeight: 24.0 + 52.0 + 24.0 + 52.0 + 24.0 + 14.0 + 24.0 + 52.0 + 24.0 + 14.0 + 24.0, hasAppBar: true),
@@ -50,13 +49,12 @@ class SignInScreenScroll extends ConsumerWidget {
                     textInputType: TextInputType.emailAddress
                   ),
                   SizedBox(height: 24.0),
-                  CustomTextField(
-                    isPasswordField: true,
+                  CustomPasswordField(
                     controller: passwordController,
                     hintText: 'password'.tr(),
                     icon: Icons.lock_rounded,
-                    obscureText: obscureText,
-                    obscurePressed: obscurePressed
+                    obscurePassword: obscurePassword,
+                    obscurePasswordPressed: obscurePasswordPressed
                   ),
                   SizedBox(height: 24.0),
                   Align(
@@ -77,7 +75,7 @@ class SignInScreenScroll extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 DefaultButton(
-                  onPressed: () => signInPressed(emailController.text, passwordController.text),
+                  onPressed: signInPressed,
                   isLoading: isLoading,
                   text: 'sign_in'.tr()
                 ),
