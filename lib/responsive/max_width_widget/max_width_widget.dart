@@ -14,7 +14,7 @@ class MaxWidthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: getMaxWidth(context)),
+      constraints: BoxConstraints(maxWidth: getMaxWidth(context: context)),
       child: child
     );
   }
