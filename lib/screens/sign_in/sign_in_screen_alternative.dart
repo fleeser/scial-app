@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:scial/helpers.dart';
 import 'package:scial/themes/palette.dart';
 import 'package:scial/widgets/custom_field/custom_password_field.dart';
 import 'package:scial/widgets/custom_field/custom_text_field.dart';
@@ -54,13 +53,10 @@ class SignInScreenAlternative extends ConsumerWidget {
               SizedBox(height: 24.0),
               Align(
                 alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: (MediaQuery.of(context).size.width - getMaxWidth(context)) / 2.0),
-                  child: LightButton(
-                    text: 'forgot_password'.tr(),
-                    fontSize: 14.0,
-                    color: Palette.gray400
-                  )
+                child: LightButton(
+                  text: 'forgot_password'.tr(),
+                  fontSize: 14.0,
+                  color: Palette.gray400
                 )
               )
             ]
